@@ -1,0 +1,14 @@
+{
+  "name": "cyberrecordparser",
+  "version": "1.0.0",
+  "description": "A Javascript utility library for parsing Apollo CyberRT recordings",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Tang Yun (@ntutangyun)",
+  "license": "MIT",
+  "dependencies": {
+    "google-protobuf": "^3.15.6"
+  }
+}
