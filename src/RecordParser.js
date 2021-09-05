@@ -1,8 +1,6 @@
 const fs = require("fs");
 const {Header, SectionType, Index, Channel, ChunkHeader, ChunkBody} = require("../protobuf_out/cyber/proto/record_pb");
-
-const SECTION_LENGTH = 16;
-const HEADER_LENGTH = 2048;
+const {SECTION_LENGTH, HEADER_LENGTH} = require("./common");
 
 class RecordParser {
     constructor() {
@@ -23,8 +21,6 @@ class RecordParser {
         this.header = null;
         this.index = null;
         this.channelInfo = {};
-        this.earliestBeginTime = 0;
-        this.latestEndTime = 0;
         this.messages = null;
         this.parsers = null;
     }

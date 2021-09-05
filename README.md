@@ -49,7 +49,7 @@ modules/perception/camera/lib/obstacle/detector/yolo/proto/yolo.proto:13:19: "ap
     - src/
         - RecordParser.js
     - examples/
-        - example.js
+        - parse_example.js
     - protobuf_out/
         - cyber/
             ...
@@ -60,10 +60,10 @@ modules/perception/camera/lib/obstacle/detector/yolo/proto/yolo.proto:13:19: "ap
 
 ## Example
 
-Please checkout `example/example.js`:
+Please checkout `example/parse_example.js`:
 ```bash
 cd example
-node example.js
+node parse_example.js
 ```
 
 ## Usage
