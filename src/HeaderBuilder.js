@@ -34,7 +34,7 @@ class HeaderBuilder {
         header.setIsComplete(false);
         header.setChunkRawSize(CHUNK_RAW_SIZE_);
         header.setSegmentRawSize(SEGMENT_RAW_SIZE_);
-        return header.toObject();
+        return header;
     }
 }
 
@@ -119,4 +119,4 @@ module.exports = HeaderBuilder;
 //     return header;
 // }
 
-console.log(HeaderBuilder.GetHeader());
+// console.log(HeaderBuilder.GetHeader());

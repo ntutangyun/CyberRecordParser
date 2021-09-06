@@ -1,12 +1,12 @@
 const fs = require("fs");
-const RecordParser = require("../src/RecordParser");
+const RecordParser = require("../../src/RecordParser");
 
 // Instantiate a new parser.
 const parser = new RecordParser();
 
 // import generated protobuf libraries
-const {PerceptionObstacles} = require("../protobuf_out/modules/perception/proto/perception_obstacle_pb");
-const {LocalizationEstimate} = require("../protobuf_out/modules/localization/proto/localization_pb");
+const {PerceptionObstacles} = require("../../protobuf_out/modules/perception/proto/perception_obstacle_pb");
+const {LocalizationEstimate} = require("../../protobuf_out/modules/localization/proto/localization_pb");
 
 // This is where user defines the ProtoBuf Classes for the channels to extract
 const parsers = {
