@@ -81,6 +81,7 @@ class RecordWriter {
                 channelMessageList = Object.values(channelData);
             }
             channelMessageList.forEach(msg => {
+                console.log(new parser(msg));
                 mergedMessageList.push({
                     channelName,
                     message: new parser(msg),

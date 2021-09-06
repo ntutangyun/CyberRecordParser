@@ -9,6 +9,6 @@
   "author": "Tang Yun (@ntutangyun)",
   "license": "MIT",
   "dependencies": {
-    "google-protobuf": "^3.15.6"
+    "google-protobuf": "^3.17.3"
   }
 }
