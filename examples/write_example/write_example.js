@@ -1,7 +1,5 @@
-const fs = require("fs");
-const RecordWriter = require("../../src/RecordWriter");
-
 // Instantiate a new parser.
+const RecordWriter = require("../../src/RecordWriter");
 const recordWriter = new RecordWriter();
 
 // import generated protobuf libraries
