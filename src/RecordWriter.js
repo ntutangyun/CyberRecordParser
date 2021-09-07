@@ -84,7 +84,7 @@ class RecordWriter {
                 console.log(new parser(msg));
                 mergedMessageList.push({
                     channelName,
-                    message: new parser(msg),
+                    message: parser.fromObject(msg),
                     lidarTimestamp: msg.header.lidarTimestamp,
                 });
             });
