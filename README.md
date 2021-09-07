@@ -184,4 +184,12 @@ try {
 
 ## Usage - Write binary records
 
+For writing, you need to install the customized version of protobuf-v3.17.3.
+
+```bash
+# un-compress the zip file
+
+
+```
+
 Writing is similar to parsing. Please check `examples/write_example` for reference.
