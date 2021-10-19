@@ -1,14 +1,8 @@
-const fs = require("fs");
 const {
-    Header,
-    SectionType,
-    Index,
     Channel,
-    ChunkHeader,
-    ChunkBody,
     SingleMessage
 } = require("../protobuf_out/cyber/proto/record_pb");
-const {SECTION_LENGTH, HEADER_LENGTH, channelTypeExtract} = require("./common");
+const {channelTypeExtract} = require("./common");
 const HeaderBuilder = require("./HeaderBuilder");
 const RecordFileWriter = require("./RecordFileWriter");
 

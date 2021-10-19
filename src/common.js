@@ -1,11 +1,6 @@
 const {
-    Header,
-    SectionType,
-    Index,
-    Channel,
     ChunkHeader,
     ChunkBody,
-    ChannelCache
 } = require("../protobuf_out/cyber/proto/record_pb");
 
 
