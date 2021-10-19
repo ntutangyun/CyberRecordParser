@@ -184,12 +184,38 @@ try {
 
 ## Usage - Write binary records
 
-For writing, you need to install the customized version of protobuf-v3.17.3.
+Writing is similar to parsing. Please check `examples/write_example` for reference.
+
+The basic flow of writing or modifying the cyber recordings files are:
+
+1. use the parser to parse the binary recording files and save data in JSON format.
+2. change the data directly in the JSON format
+3. use the `fromObject()` functions to convert JSON data into protobuf class instances
+4. serialize the messages into binary format and save to the new recording file.
+
+#### NOTE
+
+To make writing possible, user need to install the customized version of `protoc`, where I've enabled the
+function `fromObject()` which is used to parse the user defined JavaScript objects and create its corresponding protobuf
+class instances.
+
+1. Un-compress the zip file at `third-party/protobuf-3.17.3.zip`
+2. Open the terminal and build the customized version of the `protoc`
 
 ```bash
-# un-compress the zip file
-
-
+./autogen.sh
+ ./configure
+ make
+ make check
+ sudo make install
+ sudo ldconfig # refresh shared library cache.
 ```
 
-Writing is similar to parsing. Please check `examples/write_example` for reference.
+3. use the customized `protoc` to generate the JavaScript libraries
+```bash
+find modules/ cyber/ -name "*.proto" | grep -v node_modules | xargs protoc --js_out=import_style=commonjs,binary:protobuf_out
+```
+
+Please refer to [protocolbuffers](https://github.com/protocolbuffers/protobuf/blob/master/src/README.md) if you
+encounter any errors.
+
