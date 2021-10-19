@@ -14,7 +14,6 @@ class RecordWriter {
         this.parsers = null;
         this.header = HeaderBuilder.GetHeader();
         this.fileWriter = null;
-        this.isOpened = false;
         this.segmentRawSize = 0;
         this.segmentBeginTime = 0;
         this.messages = null;
@@ -40,7 +39,6 @@ class RecordWriter {
             this.fileWriter.Close();
             return false;
         }
-        this.isOpened = true;
     }
 
     InitReadersImpl(messages, parsers) {
