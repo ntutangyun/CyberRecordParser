@@ -57,6 +57,8 @@ modules/perception/camera/lib/obstacle/detector/yolo/proto/yolo.proto:13:19: "ap
         - RecordWriter.js
         - ...
     - examples/
+        - data/
+            ...
         - parse_example/
             ...
         - write_example/
@@ -75,7 +77,7 @@ Please checkout examples under `examples/` folder.
 
 ```bash
 cd example/parse_example
-node parse_example.js
+node 1.simple_parse.js
 ```
 
 ## Usage - Parse record binary
@@ -113,12 +115,12 @@ const messageObjects = {
 * run the parser
 
 ```javascript
-const recordFile = "./TEST-rec.00000";
+const recordFile = "../data/TEST-rec.00000";
 parser.parse(recordFile, messageObjects, parsers);
 
 // you may save the extracted messages into a JSON file for later process.
 try {
-    fs.writeFileSync("./messageObjects.json", JSON.stringify(messageObjects));
+    fs.writeFileSync("../data/messageObjects.json", JSON.stringify(messageObjects));
 } catch (err) {
     console.error(err);
 }
@@ -156,7 +158,7 @@ const messageArrays = {
 parser.parse(recordFile, messageArrays, parsers);
 
 try {
-    fs.writeFileSync("./messageArrays.json", JSON.stringify(messageArrays));
+    fs.writeFileSync("../data/messageArrays.json", JSON.stringify(messageArrays));
 } catch (err) {
     console.error(err);
 }

@@ -29,7 +29,7 @@ const parsers = {
 //          ...
 //      }
 // This is used to help index and synchronize the messages from different channels.
-const messageObjects = require("../parse_example/messageObjects.json");
+const messageObjects = require("../data/messageObjects.json");
 
-const outputFile = "./TEST-write.rec";
+const outputFile = "../data//TEST-write.rec";
 recordWriter.run(outputFile, messageObjects, parsers);

@@ -36,11 +36,11 @@ const messageObjects = {
     "/apollo/localization/pose": {},
 };
 
-const recordFile = "./TEST-write.rec.00000";
+const recordFile = "../data/TEST-rec.00000";
 parser.parse(recordFile, messageObjects, parsers);
 
 try {
-    fs.writeFileSync("./messageObjects.json", JSON.stringify(messageObjects));
+    fs.writeFileSync("../data/messageObjects.json", JSON.stringify(messageObjects));
 } catch (err) {
     console.error(err);
 }
@@ -66,7 +66,7 @@ const messageArrays = {
 parser.parse(recordFile, messageArrays, parsers);
 
 try {
-    fs.writeFileSync("./messageArrays.json", JSON.stringify(messageArrays));
+    fs.writeFileSync("../data/messageArrays.json", JSON.stringify(messageArrays));
 } catch (err) {
     console.error(err);
 }
