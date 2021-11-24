@@ -18,6 +18,7 @@ class RecordWriter {
         this.segmentBeginTime = 0;
         this.messages = null;
         this.parsers = null;
+        this.messageTypes = null;
     }
 
     Open(outputFile) {
@@ -54,7 +55,7 @@ class RecordWriter {
     }
 
     WriteChannel(channelName, channelParser) {
-        const channelType = channelTypeExtract(channelParser);
+        const channelType = this.messageTypes ? this.messageTypes[channelName] : channelTypeExtract(channelParser);
         const channel = new Channel();
         channel.setName(channelName);
         channel.setMessageType(channelType);
@@ -72,13 +73,28 @@ class RecordWriter {
             } else {
                 channelMessageList = Object.values(channelData);
             }
+
             channelMessageList.forEach(msg => {
-                console.log(new parser(msg));
-                mergedMessageList.push({
-                    channelName,
-                    message: parser.fromObject(msg),
-                    lidarTimestamp: msg.header.lidarTimestamp,
-                });
+                // console.log(new parser(msg));
+                let lidarTimestamp;
+
+                if (msg.header) {
+                    if (msg.header.lidarTimestamp) {
+                        lidarTimestamp = msg.header.lidarTimestamp;
+                    } else if (msg.header.timestampSec) {
+                        lidarTimestamp = Math.round(msg.header.timestampSec * 1e9);
+                    }
+                } else if (msg.singleMessageLidarTimestamp) {
+                    lidarTimestamp = msg.singleMessageLidarTimestamp;
+                }
+
+                if (lidarTimestamp) {
+                    mergedMessageList.push({
+                        channelName,
+                        message: parser.fromObject(msg),
+                        lidarTimestamp,
+                    });
+                }
             });
         }
         mergedMessageList.sort((a, b) => {
@@ -87,13 +103,17 @@ class RecordWriter {
         return mergedMessageList;
     }
 
-    run(filePath, messages, parsers) {
+    run(filePath, messages, parsers, messageTypes = null) {
         this.messages = messages;
         this.parsers = parsers;
+        this.messageTypes = messageTypes;
 
         this.Open(filePath);
         this.InitReadersImpl(messages, parsers);
-        this.mergeMessage(messages, parsers).forEach(({channelName, message, lidarTimestamp}) => {
+        const mergedMessages = this.mergeMessage(messages, parsers);
+
+        mergedMessages.forEach(({channelName, message, lidarTimestamp}, index) => {
+            console.log(`[RecordWriter] ======== ${index} / ${mergedMessages.length} =======`);
             const singleMessage = new SingleMessage();
             singleMessage.setChannelName(channelName);
             singleMessage.setContent(message.serializeBinary());
@@ -151,7 +171,7 @@ class RecordWriter {
         for (const channelName of Object.keys(this.messages)) {
             const channel = new Channel();
             channel.setName(channelName);
-            channel.setMessageType(channelTypeExtract(this.parsers[channelName]));
+            channel.setMessageType(this.messageTypes ? this.messageTypes[channelName] : channelTypeExtract(this.parsers[channelName]));
             channel.setProtoDesc("");
             if (!this.fileWriter.WriteChannel(channel)) {
                 console.error(`Failed to write channel for record file: ${this.filePath}`);

@@ -12,6 +12,7 @@ class RecordParser {
         this.channelInfo = {};
         this.messages = null;
         this.parsers = null;
+        this.messageTypes = null;
     }
 
     reset() {
@@ -50,6 +51,32 @@ class RecordParser {
         }
 
         this.close();
+        this.reset();
+    }
+
+    getChannels(filepath) {
+        this.close();
+        this.reset();
+
+        this.filepath = filepath;
+
+        if (!this.openFile()) {
+            return false;
+        }
+
+        if (!this.readHeader()) {
+            return false;
+        }
+
+        if (!this.readIndex()) {
+            return false;
+        }
+        return this.index.indexesList.filter(index => index.type === SectionType.SECTION_CHANNEL).map(index => {
+            return {
+                name: index.channelCache.name,
+                messageType: index.channelCache.messageType
+            };
+        });
     }
 
     openFile() {
@@ -193,11 +220,13 @@ class RecordParser {
                         }
 
                         const parsedMsg = this.parsers[msg.channelName].deserializeBinary(msg.content).toObject();
-                        const timestamp = parsedMsg.header.lidarTimestamp;
+                        parsedMsg["singleMessageLidarTimestamp"] = msg.time;
 
                         if (Array.isArray(this.messages[msg.channelName])) {
                             this.messages[msg.channelName].push(parsedMsg);
                         } else {
+                            // const timestamp = parsedMsg.header.lidarTimestamp;
+                            const timestamp = msg.time;
                             if (this.messages[msg.channelName].hasOwnProperty(timestamp)) {
                                 return;
                             }

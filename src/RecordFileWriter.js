@@ -47,7 +47,7 @@ class RecordFileWriter {
     }
 
     WriteSection(message) {
-        console.log(message);
+        // console.log(message);
         let type;
         if (message instanceof ChunkHeader) {
             console.log(`[WriteSection] writing ChunkHeader section`);
@@ -147,9 +147,11 @@ class RecordFileWriter {
         }
 
         if (!this.Flush()) {
-            console.error(`[RecordFileWriter] Write chunk failed`);
+            console.log(`[RecordFileWriter] Flush => Write chunk failed`);
             return false;
         }
+        this.chunkActive = new Chunk();
+        return true;
     }
 
     WriteChunk(chunkHeader, chunkBody) {
@@ -209,6 +211,7 @@ class RecordFileWriter {
     }
 
     Flush() {
+        console.log(`[RecordFileWriter] flushing ...`);
         return this.WriteChunk(this.chunkActive.header, this.chunkActive.body);
     }
 
