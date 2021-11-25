@@ -8,50 +8,29 @@ const parser = new RecordParser();
 const writer = new RecordWriter();
 
 // import generated protobuf libraries
-const {PerceptionObstacles} = require("../../protobuf_out/modules/perception/proto/perception_obstacle_pb");
-const {LocalizationEstimate} = require("../../protobuf_out/modules/localization/proto/localization_pb");
-const {TransformStampeds} = require("../../protobuf_out/modules/transform/proto/transform_pb");
-const {MonitorMessage} = require("../../protobuf_out/modules/common/monitor_log/proto/monitor_log_pb");
-const {ADCTrajectory} = require("../../protobuf_out/modules/planning/proto/planning_pb");
-const {Imu} = require("../../protobuf_out/modules/drivers/gnss/proto/imu_pb");
-const {ChassisDetail} = require("../../protobuf_out/modules/canbus/proto/chassis_detail_pb");
-const {HMIStatus} = require("../../protobuf_out/modules/dreamview/proto/hmi_status_pb");
-const {RoutingRequest} = require("../../protobuf_out/modules/routing/proto/routing_pb");
-const {GnssEphemeris} = require("../../protobuf_out/modules/drivers/gnss/proto/gnss_raw_observation_pb");
-const {ControlCommand} = require("../../protobuf_out/modules/control/proto/control_cmd_pb");
-const {SystemStatus} = require("../../protobuf_out/modules/monitor/proto/system_status_pb");
-const {PredictionObstacles} = require("../../protobuf_out/modules/prediction/proto/prediction_obstacle_pb");
-const {Gps} = require("../../protobuf_out/modules/localization/proto/gps_pb");
-const {NavigationInfo} = require("../../protobuf_out/modules/map/relative_map/proto/navigation_pb");
-const {DriveEvent} = require("../../protobuf_out/modules/common/proto/drive_event_pb");
-const {RoutingResponse} = require("../../protobuf_out/modules/routing/proto/routing_pb");
 const {Chassis} = require("../../protobuf_out/modules/canbus/proto/chassis_pb");
-// const {LocalizationStatus} = require("../../protobuf_out/modules/localization/proto/localization_status_pb");
-const {GnssBestPose} = require("../../protobuf_out/modules/drivers/gnss/proto/gnss_best_pose_pb");
-const {GnssStatus} = require("../../protobuf_out/modules/drivers/gnss/proto/gnss_status_pb");
-const {CorrectedImu} = require("../../protobuf_out/modules/localization/proto/imu_pb");
-const {InsStat} = require("../../protobuf_out/modules/drivers/gnss/proto/ins_pb");
-const {EpochObservation} = require("../../protobuf_out/modules/drivers/gnss/proto/gnss_raw_observation_pb");
-const {RawData} = require("../../protobuf_out/modules/drivers/gnss/proto/gnss_pb");
-const {TrafficLightDetection} = require("../../protobuf_out/modules/perception/proto/traffic_light_detection_pb");
-const {PadMessage} = require("../../protobuf_out/modules/control/proto/pad_msg_pb");
-const {GuardianCommand} = require("../../protobuf_out/modules/guardian/proto/guardian_pb");
-// const {AudioCapture} = require("../../protobuf_out/modules/dreamview/proto/");
+const {LatencyRecordMap} = require("../../protobuf_out/modules/common/latency_recorder/proto/latency_record_pb");
+const {LatencyReport} = require("../../protobuf_out/modules/common/latency_recorder/proto/latency_record_pb");
+const {ControlCommand} = require("../../protobuf_out/modules/control/proto/control_cmd_pb");
+const {HMIStatus} = require("../../protobuf_out/modules/dreamview/proto/hmi_status_pb");
+const {LocalizationStatus} = require("../../protobuf_out/modules/localization/proto/localization_pb");
+const {LocalizationEstimate} = require("../../protobuf_out/modules/localization/proto/localization_pb");
+const {SystemStatus} = require("../../protobuf_out/modules/monitor/proto/system_status_pb");
+const {PerceptionObstacles} = require("../../protobuf_out/modules/perception/proto/perception_obstacle_pb");
+const {TrafficLightDetection} = require('../../protobuf_out/modules/perception/proto/traffic_light_detection_pb');
+const {ADCTrajectory} = require("../../protobuf_out/modules/planning/proto/planning_pb");
+const {PredictionObstacles} = require("../../protobuf_out/modules/prediction/proto/prediction_obstacle_pb");
+const {RoutingRequest} = require("../../protobuf_out/modules/routing/proto/routing_pb");
+const {RoutingResponse} = require("../../protobuf_out/modules/routing/proto/routing_pb");
 
 // This is where user defines the ProtoBuf Classes for the channels to extract
 const parsers = {
-    "/tf_static": TransformStampeds,
-    "/apollo/monitor": MonitorMessage,
+    "/apollo/control": ControlCommand,
+    "/apollo/hmi/status": HMIStatus,
     "/apollo/localization/pose": LocalizationEstimate,
     "/apollo/perception/obstacles": PerceptionObstacles,
     "/apollo/planning": ADCTrajectory,
-    "/apollo/sensor/gnss/imu": Imu,
-    "/apollo/canbus/chassis_detail": ChassisDetail,
-    "/apollo/hmi/status": HMIStatus,
     "/apollo/routing_request": RoutingRequest,
-    "/apollo/sensor/gnss/rtk_eph": GnssEphemeris,
-    "/tf": TransformStampeds,
-    "/apollo/control": ControlCommand,
     "/apollo/monitor/system_status": SystemStatus,
     "/apollo/prediction": PredictionObstacles,
     "/apollo/sensor/gnss/odometry": Gps,
