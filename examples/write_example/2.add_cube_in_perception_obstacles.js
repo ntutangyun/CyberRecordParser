@@ -17,113 +17,70 @@ const {LocalizationStatus} = require("../../protobuf_out/modules/localization/pr
 const {LocalizationEstimate} = require("../../protobuf_out/modules/localization/proto/localization_pb");
 const {SystemStatus} = require("../../protobuf_out/modules/monitor/proto/system_status_pb");
 const {PerceptionObstacles} = require("../../protobuf_out/modules/perception/proto/perception_obstacle_pb");
-const {TrafficLightDetection} = require('../../protobuf_out/modules/perception/proto/traffic_light_detection_pb');
+const {TrafficLightDetection} = require("../../protobuf_out/modules/perception/proto/traffic_light_detection_pb");
 const {ADCTrajectory} = require("../../protobuf_out/modules/planning/proto/planning_pb");
 const {PredictionObstacles} = require("../../protobuf_out/modules/prediction/proto/prediction_obstacle_pb");
 const {RoutingRequest} = require("../../protobuf_out/modules/routing/proto/routing_pb");
 const {RoutingResponse} = require("../../protobuf_out/modules/routing/proto/routing_pb");
+const {MonitorMessage} = require("../../protobuf_out/modules/common/monitor_log/proto/monitor_log_pb");
 
 // This is where user defines the ProtoBuf Classes for the channels to extract
 const parsers = {
+    "/apollo/canbus/chassis": Chassis,
+    "/apollo/common/latency_records": LatencyRecordMap,
+    "/apollo/common/latency_reports": LatencyReport,
     "/apollo/control": ControlCommand,
     "/apollo/hmi/status": HMIStatus,
+    "/apollo/localization/msf_status": LocalizationStatus,
     "/apollo/localization/pose": LocalizationEstimate,
-    "/apollo/perception/obstacles": PerceptionObstacles,
-    "/apollo/planning": ADCTrajectory,
-    "/apollo/routing_request": RoutingRequest,
+    "/apollo/monitor": MonitorMessage,
     "/apollo/monitor/system_status": SystemStatus,
-    "/apollo/prediction": PredictionObstacles,
-    "/apollo/sensor/gnss/odometry": Gps,
-    "/apollo/navigation": NavigationInfo,
-    "/apollo/localization/msf_gnss": LocalizationEstimate,
-    "/apollo/drive_event": DriveEvent,
-    "/apollo/routing_response": RoutingResponse,
-    "/apollo/canbus/chassis": Chassis,
-    // "/apollo/localization/msf_status": LocalizationStatus,
-    "/apollo/sensor/gnss/best_pose": GnssBestPose,
-    "/apollo/sensor/gnss/gnss_status": GnssStatus,
-    "/apollo/sensor/gnss/corrected_imu": CorrectedImu,
-    "/apollo/sensor/gnss/ins_stat": InsStat,
-    "/apollo/sensor/gnss/rtk_obs": EpochObservation,
-    "/apollo/sensor/gnss/raw_data": RawData,
+    "/apollo/perception/obstacles": PerceptionObstacles,
     "/apollo/perception/traffic_light": TrafficLightDetection,
-    "/apollo/localization/msf_lidar": LocalizationEstimate,
-    "/apollo/control/pad": PadMessage,
-    "/apollo/guardian": GuardianCommand,
-    // "/apollo/hmi/audio_capture": "apollo.dreamview.AudioCapture",
+    "/apollo/planning": ADCTrajectory,
+    "/apollo/prediction": PredictionObstacles,
+    "/apollo/routing_request": RoutingRequest,
+    "/apollo/routing_response": RoutingResponse,
 };
 
 const messageTypes = {
-    "/tf_static": "apollo.transform.TransformStampeds",
-    "/apollo/monitor": "apollo.common.monitor.MonitorMessage",
-    "/apollo/localization/pose": "apollo.localization.LocalizationEstimate",
-    "/apollo/perception/obstacles": "apollo.perception.PerceptionObstacles",
-    "/apollo/planning": "apollo.planning.ADCTrajectory",
-    "/apollo/sensor/gnss/imu": "apollo.drivers.gnss.Imu",
-    "/apollo/canbus/chassis_detail": "apollo.canbus.ChassisDetail",
-    "/apollo/hmi/status": "apollo.dreamview.HMIStatus",
-    "/apollo/routing_request": "apollo.routing.RoutingRequest",
-    "/apollo/sensor/gnss/rtk_eph": "apollo.drivers.gnss.GnssEphemeris",
-    "/tf": "apollo.transform.TransformStampeds",
-    "/apollo/control": "apollo.control.ControlCommand",
-    "/apollo/monitor/system_status": "apollo.monitor.SystemStatus",
-    "/apollo/prediction": "apollo.prediction.PredictionObstacles",
-    "/apollo/sensor/gnss/odometry": "apollo.localization.Gps",
-    "/apollo/navigation": "apollo.relative_map.NavigationInfo",
-    "/apollo/localization/msf_gnss": "apollo.localization.LocalizationEstimate",
-    "/apollo/drive_event": "apollo.common.DriveEvent",
-    "/apollo/routing_response": "apollo.routing.RoutingResponse",
     "/apollo/canbus/chassis": "apollo.canbus.Chassis",
+    "/apollo/common/latency_records": "apollo.common.LatencyRecordMap",
+    "/apollo/common/latency_reports": "apollo.common.LatencyReport",
+    "/apollo/control": "apollo.control.ControlCommand",
+    "/apollo/hmi/status": "apollo.dreamview.HMIStatus",
     "/apollo/localization/msf_status": "apollo.localization.LocalizationStatus",
-    "/apollo/sensor/gnss/best_pose": "apollo.drivers.gnss.GnssBestPose",
-    "/apollo/sensor/gnss/gnss_status": "apollo.drivers.gnss.GnssStatus",
-    "/apollo/sensor/gnss/corrected_imu": "apollo.localization.CorrectedImu",
-    "/apollo/sensor/gnss/ins_stat": "apollo.drivers.gnss.InsStat",
-    "/apollo/sensor/gnss/rtk_obs": "apollo.drivers.gnss.EpochObservation",
-    "/apollo/sensor/gnss/raw_data": "apollo.drivers.gnss.RawData",
+    "/apollo/localization/pose": "apollo.localization.LocalizationEstimate",
+    "/apollo/monitor": "apollo.common.monitor.MonitorMessage",
+    "/apollo/monitor/system_status": "apollo.monitor.SystemStatus",
+    "/apollo/perception/obstacles": "apollo.perception.PerceptionObstacles",
     "/apollo/perception/traffic_light": "apollo.perception.TrafficLightDetection",
-    "/apollo/localization/msf_lidar": "apollo.localization.LocalizationEstimate",
-    "/apollo/control/pad": "apollo.control.PadMessage",
-    "/apollo/guardian": "apollo.guardian.GuardianCommand",
-    "/apollo/hmi/audio_capture": "apollo.dreamview.AudioCapture"
+    "/apollo/planning": "apollo.planning.ADCTrajectory",
+    "/apollo/prediction": "apollo.prediction.PredictionObstacles",
+    "/apollo/routing_request": "apollo.routing.RoutingRequest",
+    "/apollo/routing_response": "apollo.routing.RoutingResponse",
 };
 
 const messageObjects = {
-    // "/tf_static": [],
-    "/apollo/monitor": [],
-    "/apollo/localization/pose": [],
-    "/apollo/perception/obstacles": [],
-    "/apollo/planning": [],
-    "/apollo/sensor/gnss/imu": [],
-    "/apollo/canbus/chassis_detail": [],
-    "/apollo/hmi/status": [],
-    "/apollo/routing_request": [],
-    // "/apollo/sensor/gnss/rtk_eph": [],
-    // "/tf": [],
-    "/apollo/control": [],
-    "/apollo/monitor/system_status": [],
-    "/apollo/prediction": [],
-    "/apollo/sensor/gnss/odometry": [],
-    "/apollo/navigation": [],
-    "/apollo/localization/msf_gnss": [],
-    "/apollo/drive_event": [],
-    "/apollo/routing_response": [],
     "/apollo/canbus/chassis": [],
-    // "/apollo/localization/msf_status": [],
-    "/apollo/sensor/gnss/best_pose": [],
-    "/apollo/sensor/gnss/gnss_status": [],
-    "/apollo/sensor/gnss/corrected_imu": [],
-    "/apollo/sensor/gnss/ins_stat": [],
-    "/apollo/sensor/gnss/rtk_obs": [],
-    "/apollo/sensor/gnss/raw_data": [],
+    "/apollo/common/latency_records": [],
+    "/apollo/common/latency_reports": [],
+    "/apollo/control": [],
+    "/apollo/hmi/status": [],
+    "/apollo/localization/msf_status": [],
+    "/apollo/localization/pose": [],
+    "/apollo/monitor": [],
+    "/apollo/monitor/system_status": [],
+    "/apollo/perception/obstacles": [],
     "/apollo/perception/traffic_light": [],
-    "/apollo/localization/msf_lidar": [],
-    "/apollo/control/pad": [],
-    "/apollo/guardian": [],
+    "/apollo/planning": [],
+    "/apollo/prediction": [],
+    "/apollo/routing_request": [],
+    "/apollo/routing_response": [],
 };
 
 // load original record file
-const recordFile = "../data/demo_3.5.record";
+const recordFile = "../data/TEST-rec.00000";
 console.log(parser.parse(recordFile, messageObjects, parsers));
 
 // configure the obstacle data
@@ -132,23 +89,23 @@ const {PerceptionObstacle} = require("../../protobuf_out/modules/perception/prot
 const obstacleData = {
     id: 1000,
     position: {
-        x: 587720,
-        y: 4141421,
-        z: -32.4
+        x: 552560,
+        y: 4182086,
+        z: 10.12
     },
     length: 4,
     width: 4,
     height: 4,
     polygonPointList: [
-        {x: 587718, y: 4141419, z: -32.4},
-        {x: 587718, y: 4141423, z: -32.4},
-        {x: 587722, y: 4141423, z: -32.4},
-        {x: 587722, y: 4141419, z: -32.4},
+        {x: 552558, y: 4182084, z: 10.12},
+        {x: 552558, y: 4182088, z: 10.12},
+        {x: 552562, y: 4182088, z: 10.12},
+        {x: 552562, y: 4182084, z: 10.12},
     ],
     anchorPoint: {
-        x: 587720,
-        y: 4141421,
-        z: -32.4
+        x: 552560,
+        y: 4182086,
+        z: 10.12
     },
     theta: 0,
     velocity: {
@@ -173,7 +130,7 @@ const obstacleData = {
     // timestamp: 0,
 };
 
-const injectStartTimestamp = 1545095755.823001;
+const injectStartTimestamp = 1614695848.445411921;
 
 messageObjects["/apollo/perception/obstacles"].forEach(msg => {
     if (msg.header.timestampSec >= injectStartTimestamp) {
@@ -185,5 +142,5 @@ messageObjects["/apollo/perception/obstacles"].forEach(msg => {
     }
 });
 
-const outputFile = "../data/demo_3.5.simple_cube.record";
+const outputFile = "../data/TEST-write.simple_cube.record";
 writer.run(outputFile, messageObjects, parsers, messageTypes);
